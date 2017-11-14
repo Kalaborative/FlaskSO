@@ -42,12 +42,16 @@ jobs:
       # run tests!
       - run:
           name: Starting Flask server
-          command: python app.py
+          command: |
+            . venv/bin/activate
+            python app.py
           background: true
 
       - run:
           name: run tests
-          command: python -m pytest -q test_selenium.py
+          command: |
+            . venv/bin/activate
+            python -m pytest -q test_selenium.py
 
       - store_artifacts:
           path: test-reports
