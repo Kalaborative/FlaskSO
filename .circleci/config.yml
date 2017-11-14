@@ -58,5 +58,5 @@ jobs:
           destination: test-reports
 
       - store_test_results:
-          path: /tmp/test-results
+          path: test-results
           
