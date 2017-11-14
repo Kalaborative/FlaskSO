@@ -43,11 +43,6 @@ def test_account():
 	cards = driver.find_elements_by_tag_name('li')
 	assert len(cards) == 1
 
-def test_result():
-	driver.get('localhost:5000/results')
-	title = driver.find_element_by_tag_name('h1').text
-	assert "by" not in title
-
 def test_code():
 	r = requests.get('http://localhost:5000/randomstuff')
 	assert r.status_code == 404
