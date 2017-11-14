@@ -55,8 +55,9 @@ def test_result():
 
 
 def test_code():
-	r = requests.get('http://localhost:5000/randomstuff')
-	assert r.status_code == 404
+	driver.get('http://localhost:5000/randomstuff')
+	status_code = driver.find_element_by_tag_name('h1').text
+	assert "Not Found" in status_code
 
 def test_special_char():
 	driver.get('localhost:5000')
