@@ -2,12 +2,13 @@
 <html>
 <head>
   <title>SearchOverflow</title>
-  <link rel="stylesheet" type="text/css" href="static/css/results.css">
+  <link rel="stylesheet" type="text/css" href="../../static/css/results.css">
 </head>
 <body>
 <div class="strip-background"></div>
 <div class="search__container">
   <div class="backArrow" id="backButton">&#10140;</div>
+  {% if posts%}
   {% if posts|length > 0 %}
   <h1>Recent Posts by {{ username }}</h1>
   <ul class="card">
@@ -29,6 +30,7 @@
   </ul>
   {% else %}
   <h1>Recent Posts</h1>
+  {% endif %}
   {% endif %}
 </div>
 

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, jsonify, redirect, url_for
+from flask import Flask, render_template, request, flash, jsonify, redirect, url_for, session
 from stackapi import StackAPI
 from sys import exit
 from os import urandom
@@ -26,11 +26,10 @@ def index():
 		else:		
 			posts = SO.fetch('/users/{ids}/posts', ids=[SO_ID], pagesize=5)
 			try:
-				name = posts["items"][0]["owner"]["display_name"]
-				profile_pic = posts["items"][0]["owner"]["profile_image"]
-				raw_data = generate_data(posts)
-				return render_template('results.html', username=name, pfp=profile_pic, posts=raw_data)
-				#return redirect(url_for('results', uuid=SO_ID, username=name))
+				session['name'] = posts["items"][0]["owner"]["display_name"]
+				session['profile_pic'] = posts["items"][0]["owner"]["profile_image"]
+				session['raw_data'] = generate_data(posts)
+				return redirect(url_for('results', uuid=SO_ID, user=session.get('name')))
 			except Exception as e:
 				flash(e)
 				return render_template('index.html')
@@ -60,10 +59,12 @@ def generate_data(json):
 	raw_data = [a[0] for a in all_data]
 	return raw_data
 
-#@app.route('/results/<uuid>/<username>')
-#def results(uuid, username):
-	#name = username
-	#render_template('results.html', username=name, pfp=profile_pic, posts=raw_data)
+@app.route('/results/<uuid>/<user>')
+def results(uuid, user):
+	name = session.get('name')
+	profile_pic = session.get('profile_pic')
+	raw_data = session.get('raw_data')
+	return render_template('results.html', username=name, pfp=profile_pic, posts=raw_data)
 
 if __name__ == "__main__":
 	app.run(debug=True)

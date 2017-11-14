@@ -1,5 +1,7 @@
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 import requests
+import pytest
 from flask import get_flashed_messages
 
 driver = webdriver.Chrome()
@@ -42,6 +44,15 @@ def test_account():
 	driver.find_element_by_id('login-button').click()
 	cards = driver.find_elements_by_tag_name('li')
 	assert len(cards) == 1
+
+def result():
+	driver.get('localhost:5000/results/4835124/Mom')
+	title = driver.find_element_by_tag_name('h1').text
+
+def test_result():
+	with pytest.raises(NoSuchElementException):
+		result()
+
 
 def test_code():
 	r = requests.get('http://localhost:5000/randomstuff')
