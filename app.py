@@ -49,8 +49,6 @@ def index():
 						title = SO.fetch('/questions/{ids}', ids=[p[0]])["items"][0]["title"]
 						u_title = parser.unescape(title)
 						p.append(u_title)
-				print(len(post_data))
-				print(len(links))
 				all_data = list(zip(post_data, links, scores))
 				for data in all_data:
 					data[0].extend([data[1]])
