@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, jsonify
+from flask import Flask, render_template, request, flash, jsonify, redirect, url_for
 from stackapi import StackAPI
 from sys import exit
 from os import urandom
@@ -15,11 +15,9 @@ def index():
 	if request.method == "POST":
 		SO_ID = request.form["inputID"]
 		found_error = False
-		for num in SO_ID:
-			if num.isalpha():
-				flash("Please submit a valid ID. No letters.")
-				found_error = True
-				break
+		found_error = any([num.isalpha() for num in SO_ID])
+		if found_error:
+			flash("Please submit a valid ID. Numbers only!")
 		if len(SO_ID) != 7:
 			flash("Invalid length. Try again.")
 			found_error = True
@@ -30,41 +28,42 @@ def index():
 			try:
 				name = posts["items"][0]["owner"]["display_name"]
 				profile_pic = posts["items"][0]["owner"]["profile_image"]
-				links = []
-				for item in posts["items"]:
-					links.append(item['link'])
-				scores = []
-				for item in posts["items"]:
-					scores.append(item['score'])
-				post_data = []
-				for item in posts["items"]:
-					post_data.append([item["post_id"], item["post_type"]])
-				parser = htmlparser.HTMLParser()
-				for p in post_data:
-					if p[1] == "answer":
-						title = SO.fetch('/answers/{ids}/questions', ids=[p[0]])["items"][0]["title"]
-						u_title = parser.unescape(title)
-						p.append(u_title)
-					else:
-						title = SO.fetch('/questions/{ids}', ids=[p[0]])["items"][0]["title"]
-						u_title = parser.unescape(title)
-						p.append(u_title)
-				all_data = list(zip(post_data, links, scores))
-				for data in all_data:
-					data[0].extend([data[1]])
-					data[0].extend([data[2]])
-					#del data[1]
-				raw_data = [a[0] for a in all_data]
-				#return jsonify(raw_data)
+				raw_data = generate_data(posts)
 				return render_template('results.html', username=name, pfp=profile_pic, posts=raw_data)
+				#return redirect(url_for('results', uuid=SO_ID, username=name))
 			except Exception as e:
 				flash(e)
 				return render_template('index.html')
 	return render_template('index.html')
 
-@app.route('/results')
-def results():
-	return render_template('results.html', username="Mangohero1")
+def generate_data(json):
+	links = []
+	for item in json['items']:
+		links.append(item['link'])
+	scores = []
+	for item in json["items"]:
+		scores.append(item['score'])
+	post_data = []
+	for item in json["items"]:
+		post_data.append([item["post_id"], item["post_type"]])
+	parser = htmlparser.HTMLParser()
+	for p in post_data:
+		if p[1] == "answer":
+			title = SO.fetch('/answers/{ids}/questions', ids=[p[0]])["items"][0]["title"]
+		else:
+			title = SO.fetch('/questions/{ids}', ids=[p[0]])["items"][0]["title"]
+		p.append(parser.unescape(title))
+	all_data = list(zip(post_data, links, scores))
+	for data in all_data:
+		data[0].extend([data[1]])
+		data[0].extend([data[2]])
+	raw_data = [a[0] for a in all_data]
+	return raw_data
+
+#@app.route('/results/<uuid>/<username>')
+#def results(uuid, username):
+	#name = username
+	#render_template('results.html', username=name, pfp=profile_pic, posts=raw_data)
 
 if __name__ == "__main__":
 	app.run(debug=True)
