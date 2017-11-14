@@ -15,7 +15,7 @@ def index():
 	if request.method == "POST":
 		SO_ID = request.form["inputID"]
 		found_error = False
-		found_error = any([num.isalpha() for num in SO_ID])
+		found_error = not all([num.isdigit() for num in SO_ID])
 		if found_error:
 			flash("Please submit a valid ID. Numbers only!")
 		if len(SO_ID) != 7:
