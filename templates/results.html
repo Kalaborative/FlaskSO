@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SearchOverflow</title>
+  <link rel="stylesheet" type="text/css" href="static/css/results.css">
+</head>
+<body>
+<div class="strip-background"></div>
+<div class="search__container">
+  <h1>Recent Posts by {{ username }}</h1>
+  <ul class="card">
+    {% for post in posts %}
+    <li class="search-item">
+      <div class="search-item__image" style="background-image: url({{ pfp }});"></div>
+      <div class="search-item__content">
+        <p class="text--medium">
+          {{post [2] }}
+          <span class="label label--red text--upcase">{{post [1] }}</span>
+        </p>
+        <p class="text--small text--muted"><strong>Score: </strong>{{post [4] }}</p>
+      </div>
+      <div class="search-item__options">
+        <button class="button button--outline button--small"><a href="{{post[3]}}" target="_blank">Go to Post</a></button>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="text--center">
+  <p class="text--small text--muted">No more results.</p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</body>
+</html>

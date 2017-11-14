@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SearchOverflow</title>
+	<link rel="stylesheet" type="text/css" href="static/css/boxes.css">
+	<link rel="shortcut icon" href="static/img/SO.ico" type="image/x-icon">
+    <link rel="icon" href="static/img/SO.ico" type="image/x-icon">
+</head>
+<body>
+	<div class="wrapper">
+	<div class="container">
+		<h1 id="title-text">Welcome. Enter your Stack Overflow user ID here.</h1>
+		<form class="form" method="post" action="#">
+			<input type="text" placeholder="Enter 7-digit ID" name="inputID" autocomplete="off">
+			<button id="login-button" onclick="document.forms[0].submit();">Get my posts</button>
+		</form>
+		{% with messages = get_flashed_messages() %}
+ 		 {% if messages %}
+    	  {% for message in messages %}
+      		<p style="color: red">
+			{{ message }}
+			</p>
+    	  {% endfor %}
+ 		 {% endif %}
+		{% endwith %}
+	</div>
+	
+	<ul class="bg-bubbles">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="static/js/form.js"></script>
+</body>
+</html>
