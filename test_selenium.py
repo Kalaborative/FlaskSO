@@ -49,7 +49,7 @@ def test_result():
 	assert "by" not in title
 
 def test_code():
-	r = requests.get('localhost:5000/randomstuff')
+	r = requests.get('http://localhost:5000/randomstuff')
 	assert r.status_code == 404
 
 def test_special_char():
