@@ -62,9 +62,12 @@ def generate_data(json):
 @app.route('/results/<uuid>/<user>')
 def results(uuid, user):
 	name = session.get('name')
-	profile_pic = session.get('profile_pic')
-	raw_data = session.get('raw_data')
-	return render_template('results.html', username=name, pfp=profile_pic, posts=raw_data)
+	if name == user:
+		profile_pic = session.get('profile_pic')
+		raw_data = session.get('raw_data')
+		return render_template('results.html', username=name, pfp=profile_pic, posts=raw_data)
+	else:
+		return render_template('results.html', username=user, pfp=None, posts=None)
 
 if __name__ == "__main__":
 	app.run(debug=True)

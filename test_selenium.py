@@ -10,7 +10,7 @@ invalid_length = "Invalid length. Try again."
 
 def test_setup():
 	driver.get('localhost:5000')
-	driver.implicitly_wait(30)
+	driver.implicitly_wait(10)
 	title = driver.find_element_by_id('title-text').text
 	assert "Welcome" in title
 
@@ -44,14 +44,6 @@ def test_account():
 	driver.find_element_by_id('login-button').click()
 	cards = driver.find_elements_by_tag_name('li')
 	assert len(cards) == 1
-
-def result():
-	driver.get('localhost:5000/results/4835124/Mom')
-	title = driver.find_element_by_tag_name('h1').text
-
-def test_result():
-	with pytest.raises(NoSuchElementException):
-		result()
 
 
 def test_code():

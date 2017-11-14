@@ -8,9 +8,9 @@
 <div class="strip-background"></div>
 <div class="search__container">
   <div class="backArrow" id="backButton">&#10140;</div>
+  <h1>Recent Posts by {{ username }}</h1>
   {% if posts%}
   {% if posts|length > 0 %}
-  <h1>Recent Posts by {{ username }}</h1>
   <ul class="card">
     {% for post in posts %}
     <li class="search-item">
